@@ -1,24 +1,3 @@
-"""
-*************************************************************************************************************************************************************************************************
-Kevin Achieng
-kachieng@uwyo.edu
-Department of Civil and Artichectural Engineering
-University of Wyoming
-
-October 29th, 2018
-December 17th, 2018
-December 30th, 2018
-
-#1. Single-layer artificial neural network (ANN) Prediction of Soil Moisture (given suction) & thus Soil Water Retention Curve  for soil (e.g. Loamy Sand) subjected 
-	to monotonic drying
-#2. Deep Neural Network (DNN) (2-9-Layer artificial neural network ) Prediction of Soil Moisture (given suction) & thus Soil Water Retention Curve  for soil (e.g. Loamy Sand) 
-	subjected to monotonic drying
-#   Deep Neural Network (DNN) is an artificial neural network (ANN) with multiple (>=2) layers between the input and output layers.
-*************************************************************************************************************************************************************************************************
-
-"""
-
-
 # 1.1 Import the primary libraries 
 import tensorflow.compat.v1 as tf
 import numpy
@@ -292,7 +271,7 @@ predicted_SWC['SWC_DNN']=pd.DataFrame(predicted_Y).iloc[:, 0:1].values
 predicted_SWC['SWC_DNN_5HiddenLayers']=pd.DataFrame(predicted_DNN5_Y).iloc[:, 0:1].values
 
 print(predicted_SWC)
-predicted_SWC.to_csv('./Output_files/ANN_DNN_Layer5_predicted_Drying1_SWC_Epoch=5000.csv', encoding='utf-8', index=False)
+predicted_SWC.to_csv('./Output_files/DNN_Layer5_predicted_Drying1_SWC_Epoch=5000.csv', encoding='utf-8', index=False)
 
 # Willmot's index of agreement d1
 d1_DNN = 1-(((soilData['Observed Water Content']-predicted_SWC['SWC_DNN']).sum())/(abs(soilData['Observed Water Content']-y_mean)+abs(predicted_SWC['SWC_DNN']-y_mean)).sum())
