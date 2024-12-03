@@ -292,7 +292,7 @@ predicted_SWC['SWC_DNN']=pd.DataFrame(predicted_Y).iloc[:, 0:1].values
 predicted_SWC['SWC_DNN_5HiddenLayers']=pd.DataFrame(predicted_DNN5_Y).iloc[:, 0:1].values
 
 print(predicted_SWC)
-predicted_SWC.to_csv('./Output_filesANN_DNN_Layer5_predicted_Drying1_SWC_Epoch=5000.csv', encoding='utf-8', index=False)
+predicted_SWC.to_csv('./Output_files/ANN_DNN_Layer5_predicted_Drying1_SWC_Epoch=5000.csv', encoding='utf-8', index=False)
 
 # Willmot's index of agreement d1
 d1_DNN = 1-(((soilData['Observed Water Content']-predicted_SWC['SWC_DNN']).sum())/(abs(soilData['Observed Water Content']-y_mean)+abs(predicted_SWC['SWC_DNN']-y_mean)).sum())
