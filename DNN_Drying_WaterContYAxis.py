@@ -104,7 +104,7 @@ def Deep_NN_5HiddenLayers(x, weights5, biases5):
 # costs = {3: [], 5: [], 7: [], 9: [], 11: []}
 # timeToRun = {3: [None, None], 5: [None, None], 7: [None, None], 9: [None, None], 11: [None, None]}
 # 9. Specify the number of neurons per layer i.e. neurons in input layer, hidden layer(s), and output layer
-num_neurons = 11
+num_neurons = 7
 start = datetime.now()
 dim_in = 1
 dim1 = num_neurons
