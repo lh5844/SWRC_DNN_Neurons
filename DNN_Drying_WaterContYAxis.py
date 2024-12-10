@@ -255,9 +255,9 @@ dataDict = {
     "costs": [float(i) for i in costsSeries],
     "trainTime": trainTime,
     "testTime": testTime,
-    "d1": round(d1_DNN5,4),
-    "RSME": round(np.sqrt(mean_squared_error(soilData.iloc[:, 0:1].values, predicted_DNN5_Y)),3),
-    "R2": round(np.sqrt(r2_score(soilData.iloc[:, 0:1].values, predicted_DNN5_Y)),4)
+    "d1": d1_DNN5,
+    "RSME": np.sqrt(mean_squared_error(soilData.iloc[:, 0:1].values, predicted_DNN5_Y)),
+    "R2": np.sqrt(r2_score(soilData.iloc[:, 0:1].values, predicted_DNN5_Y))
 }
 with open(f"runData/{num_neurons}_neurons.json", "w") as f:
     json.dump(dataDict, f)
