@@ -2,10 +2,17 @@ import json
 from matplotlib import pyplot as plt
 import math
 
+import numpy as np
+
 def readRunData(filepath: str) -> dict:
     with open(filepath, "r") as f:
         data = json.load(f)
     return data
+
+def normalize(data):
+    min_val = min(data)
+    max_val = max(data)
+    return [(x - min_val)/(max_val - min_val) if x != min_val else 0.01 for x in data]
 
 # Process Data
 run3 = readRunData("runData/3_neurons.json")
@@ -14,35 +21,57 @@ run7 = readRunData("runData/7_neurons.json")
 run9 = readRunData("runData/9_neurons.json")
 run11 = readRunData("runData/11_neurons.json")
 
-# D-1 Results
-fig = plt.figure()
-ax = plt.subplot()
-plt.bar(["3 Neurons","5 Neurons","7 Neurons","9 Neurons","11 Neurons"], [run3["d1"], run5["d1"], run7["d1"], run9["d1"], run11["d1"]], label="d1")
-plt.ylim([.97, 1.01])
-plt.title("d-1 Values For Each Run")
-plt.xlabel("Neurons per Hidden Layer")
-plt.ylabel("d-1")
-plt.savefig("d-1.png")
+rmseData = [run3["RSME"], run5["RSME"], run7["RSME"], run9["RSME"], run11["RSME"]]
+d1Data = [run3["d1"], run5["d1"], run7["d1"], run9["d1"], run11["d1"]]
+r2Data = [run3["R2"], run5["R2"], run7["R2"], run9["R2"], run11["R2"]]
 
-# RMSE Results
-fig = plt.figure()
-ax = plt.subplot()
-plt.bar(["3 Neurons","5 Neurons","7 Neurons","9 Neurons","11 Neurons"], [run3["RSME"], run5["RSME"], run7["RSME"], run9["RSME"], run11["RSME"]], label="RSME")
-plt.ylim([0, .0031])
-plt.title("RMSE Values For Each Run")
-plt.xlabel("Neurons per Hidden Layer")
-plt.ylabel("RMSE")
-plt.savefig("RMSE.png")
+print(f"~~~~~RUN ANALYSIS:~~~~~~~~~~~~~~\n\t3{'\t'*3}5{'\t'*3}7{'\t'*3}9{'\t'*3}11")
+print("d-1:\t"+"\t".join([str(i) for i in d1Data]))
+print("RMSE:\t"+"\t".join([str(i) for i in rmseData]))
+print("R-Sq.:\t"+"\t".join([str(i) for i in r2Data]))
 
-# R2 Results
 fig = plt.figure()
 ax = plt.subplot()
-plt.bar(["3 Neurons","5 Neurons","7 Neurons","9 Neurons","11 Neurons"], [run3["R2"], run5["R2"], run7["R2"], run9["R2"], run11["R2"]], label="R2")
-plt.ylim([.99, .998])
-plt.title("R2 Values For Each Run")
+
+# Performance Metrics
+bar_width = 0.2
+cats = ["3 Neurons","5 Neurons","7 Neurons","9 Neurons","11 Neurons"]
+x = np.arange(len(cats))
+plt.bar(cats, d1Data, width=bar_width, label='d-1')
+# plt.bar(x+bar_width, normalize(rmseData), width=bar_width, label='Root Mean-Squared Error')
+plt.bar(x-bar_width, r2Data, width=bar_width, label='R-Squared')
+plt.title("Performance Metrics For Each Run")
 plt.xlabel("Neurons per Hidden Layer")
-plt.ylabel("R2")
-plt.savefig("R2.png")
+plt.ylim([.98, 1.01])
+plt.axhline(1, color="red", linestyle="--", label="Perfect Model")
+plt.legend()
+plt.ylabel("d-1/R-Sq. Score")
+plt.savefig("runData/performance.png")
+
+fig.clear()
+
+# Modified Performance Metrics
+bar_width = 0.2
+cats = ["3 Neurons","5 Neurons","7 Neurons","9 Neurons","11 Neurons"]
+x = np.arange(len(cats))
+plt.bar(cats, [abs(1-i) for i in d1Data], width=bar_width, label='d-1')
+# plt.bar(x+bar_width, normalize(rmseData), width=bar_width, label='Root Mean-Squared Error')
+plt.bar(x-bar_width, [abs(1-i) for i in r2Data], width=bar_width, label='R-Squared')
+plt.title("Performance Deviations from Perfection")
+plt.xlabel("Neurons per Hidden Layer")
+plt.legend()
+# plt.ylim([, 1.01])
+plt.ylabel("Absolute Difference from 1")
+plt.savefig("runData/modified_performance.png")
+
+fig.clear()
+
+# RMSE Comparison
+plt.bar(["3 Neurons","5 Neurons","7 Neurons","9 Neurons","11 Neurons"], normalize(rmseData))
+plt.title("Root Mean-Squared Error For Each Run")
+plt.xlabel("Neurons per Hidden Layer")
+plt.ylabel("min-mix Normalized RMSE")
+plt.savefig("runData/rmse.png")
 
 # Train time Results
 fig = plt.figure()
@@ -52,7 +81,9 @@ plt.ylim([100, 250])
 plt.title("Training Time For Each Run")
 plt.xlabel("Neurons per Hidden Layer")
 plt.ylabel("Training Time (seconds)")
-plt.savefig("traintime.png")
+plt.savefig("runData/traintime.png")
+
+fig.clear()
 
 # Convergence
 fig = plt.figure()
@@ -66,4 +97,4 @@ plt.title(f"Convergence Times")
 plt.xlabel("Epochs")
 plt.legend()
 plt.ylabel("log_10(Cost)")
-plt.savefig("Convergence.png")
+plt.savefig("runData/convergence.png")
