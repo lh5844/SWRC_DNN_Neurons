@@ -104,7 +104,7 @@ def Deep_NN_5HiddenLayers(x, weights5, biases5):
 # costs = {3: [], 5: [], 7: [], 9: [], 11: []}
 # timeToRun = {3: [None, None], 5: [None, None], 7: [None, None], 9: [None, None], 11: [None, None]}
 # 9. Specify the number of neurons per layer i.e. neurons in input layer, hidden layer(s), and output layer
-num_neurons = 7
+num_neurons = 11
 start = datetime.now()
 dim_in = 1
 dim1 = num_neurons
@@ -229,7 +229,7 @@ ax = plt.subplot(111)
 
 plt.scatter(soilData.iloc[:, 0:1].values, soilData.iloc[:, 2:3].values, label='Observed Data, '+'N='+str(n_samples), facecolors='none', edgecolors='r')
 
-plt.semilogy(predicted_DNN5_Y, soilData.iloc[:, 2:3].values, 'k^' ,label=f'{num_neurons}neurons_DNN5: $R^2=$' + str(round(np.sqrt(r2_score(soilData.iloc[:, 0:1].values, predicted_DNN5_Y)),4))+ ', RMSE='+str(round(np.sqrt(mean_squared_error(soilData.iloc[:, 0:1].values, predicted_DNN5_Y)),3))  + '$cm^3$/$cm^3$'+', d1='+str(round(d1_DNN5,4)))
+plt.semilogy(predicted_DNN5_Y, soilData.iloc[:, 2:3].values, 'k^' ,label=f'{num_neurons}neurons_DNN5')
 
 plt.xlabel('Soil Water Content ($cm^3$/$cm^3$)')
 plt.ylabel('Suction (cm)')
